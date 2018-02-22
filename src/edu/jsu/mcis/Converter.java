@@ -51,10 +51,20 @@ public class Converter {
             CSVReader reader = new CSVReader(new StringReader(csvString));
             List<String[]> full = reader.readAll();
             Iterator<String[]> iterator = full.iterator();
+            String[] first = iterator.next();
             
             JSONObject jsonObject = new JSONObject();
-            
-            // INSERT YOUR CODE HERE
+            JSONArray colHeaders = new JSONArray();
+            for (String field : first){
+                colHeaders.add(field);
+            }
+            jsonObject.put("colHeaders", colHeaders);
+           
+            JSONArray rowHeaders = new JSONArray();
+            for (String field : first) {
+                rowHeaders.add(field);
+            }
+            jsonObject.put("rowHeaders", rowHeaders);
             
         }
         
@@ -76,7 +86,7 @@ public class Converter {
             StringWriter writer = new StringWriter();
             CSVWriter csvWriter = new CSVWriter(writer, ',', '"', '\n');
             
-            // INSERT YOUR CODE HERE
+            
             
         }
         
