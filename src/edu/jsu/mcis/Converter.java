@@ -55,17 +55,49 @@ public class Converter {
             
             JSONObject jsonObject = new JSONObject();
             JSONArray colHeaders = new JSONArray();
+            JSONArray rowHeaders = new JSONArray();
+            JSONArray data = new JSONArray();
+            String[] record;
+            
             for (String field : first){
                 colHeaders.add(field);
             }
             jsonObject.put("colHeaders", colHeaders);
            
-            JSONArray rowHeaders = new JSONArray();
-            for (String field : first) {
-                rowHeaders.add(field);
+            while(iterator.hasNext()) {
+                record = iterator.next();
+                
+                
+                for (int i = 1; i < first.length; i++){
+                    if(i == 0){
+                        rowHeaders.add(record[i]);
+                        jsonObject.put("rowHeaders", rowHeaders);
+                    }
+                }
+                
             }
-            jsonObject.put("rowHeaders", rowHeaders);
+            Integer[][]dataArray = new Integer[8][4];
             
+            for(int i = 1; i <full.size(); i++){
+                Integer[] intParse = new Integer[4];
+                record = full.get(i);
+                for(int j = 1; j < record.length; j++){
+                    intParse[j-1] = Integer.parseInt(record[j]);
+                }
+                dataArray[i-1] = intParse;
+            }
+            
+            for (int i = 0; i < 8; i++){
+                JSONArray dataKeeper = new JSONArray();
+                for(int j = 0; j < 4; j++){
+                    dataKeeper.add(dataArray[i][j]);
+                }
+                data.add(dataKeeper);
+            }
+            String jsonString = "";
+            jsonObject.put("data", data);
+            jsonString = JSONValue.toJSONString(jsonObject);
+            results = jsonString;
         }
         
         catch(IOException e) { return e.toString(); }
